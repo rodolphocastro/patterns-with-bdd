@@ -139,5 +139,12 @@ namespace Books.Spec.Steps
         {
             Assert.Equal(_wrappedContext.PublicationDate, _subject.PublishedOn);
         }
+
+        [Then(@"the book's revision should be (.*)")]
+        public void ThenTheBookSRevisionShouldBe(int p0)
+        {
+            Assert.Equal(p0, _subject.Version);
+        }
+
     }
 }
