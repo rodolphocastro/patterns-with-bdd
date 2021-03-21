@@ -97,7 +97,7 @@ namespace Books.Lib.Entities
 
     public class UnpublishedBook : Book
     {
-        internal UnpublishedBook(string authorsName, string title)
+        public UnpublishedBook(string authorsName, string title)
             : base(authorsName, title)
         {
             _publishingState = new BookPublishState();
@@ -106,7 +106,7 @@ namespace Books.Lib.Entities
 
     public class PublishedBook : Book
     {
-        internal PublishedBook(string authorsName, string title, BookPublishState publishState) 
+        public PublishedBook(string authorsName, string title, BookPublishState publishState) 
             : base(authorsName, title, publishState)
         {
 
