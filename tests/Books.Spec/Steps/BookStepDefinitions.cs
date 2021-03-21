@@ -76,7 +76,7 @@ namespace Books.Spec.Steps
             _subject.RenameTo(newTitle);
         }
 
-        [When(@"the factory creates a book")]
+        [When(@"the vanilla factory creates a book")]
         public void WhenTheFactoryCreatesABook()
         {
             using BookFactory bookFactory = new BookFactory();
