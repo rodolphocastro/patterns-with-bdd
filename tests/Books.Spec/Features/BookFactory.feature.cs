@@ -43,7 +43,6 @@ namespace Books.Spec.Features
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "BookFactory", @"	A Factory is a ""creational"" design pattern that allows you to create an interface
 	for creating objects in a superclass that can be tuned by subclasses in order
 	to alter the type of objects created, insert additional logic, et cetera.
-
 	You can read more about the Factory on [Refactoring Guru](https://refactoring.guru/design-patterns/factory-method).", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -81,13 +80,13 @@ namespace Books.Spec.Features
         
         public virtual void FeatureBackground()
         {
-#line 9
- #line hidden
-#line 10
-  testRunner.Given("the author\'s name is \"H.P. Lovecraft\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 7
 #line hidden
-#line 11
-  testRunner.And("the book\'s title is \"The Call of Cthulhu\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 8
+ testRunner.Given("the author\'s name is \"H.P. Lovecraft\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 9
+ testRunner.And("the book\'s title is \"The Call of Cthulhu\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
         }
         
@@ -96,16 +95,16 @@ namespace Books.Spec.Features
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Factorize a book")]
+        [Xunit.SkippableFactAttribute(DisplayName="Factorize a book with the default Factory")]
         [Xunit.TraitAttribute("FeatureTitle", "BookFactory")]
-        [Xunit.TraitAttribute("Description", "Factorize a book")]
-        public virtual void FactorizeABook()
+        [Xunit.TraitAttribute("Description", "Factorize a book with the default Factory")]
+        public virtual void FactorizeABookWithTheDefaultFactory()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Factorize a book", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 13
- this.ScenarioInitialize(scenarioInfo);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Factorize a book with the default Factory", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 11
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
             bool isFeatureIgnored = default(bool);
@@ -124,20 +123,20 @@ namespace Books.Spec.Features
             else
             {
                 this.ScenarioStart();
-#line 9
- this.FeatureBackground();
+#line 7
+this.FeatureBackground();
+#line hidden
+#line 12
+ testRunner.When("the vanilla factory creates a book", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 13
+ testRunner.Then("the book should not be null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 14
-  testRunner.When("the vanilla factory creates a book", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("the book\'s title should match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 15
-  testRunner.Then("the book should not be null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 16
-  testRunner.And("the book\'s title should match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 17
-  testRunner.And("the book author\'s name should match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the book author\'s name should match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

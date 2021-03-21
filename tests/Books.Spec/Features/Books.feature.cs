@@ -77,13 +77,13 @@ namespace Books.Spec.Features
         
         public virtual void FeatureBackground()
         {
-#line 5
- #line hidden
-#line 6
-  testRunner.Given("the author\'s name is \"H.P. Lovecraft\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 4
 #line hidden
-#line 7
-  testRunner.And("the book\'s title is \"The Call of Cthulhu\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 5
+ testRunner.Given("the author\'s name is \"H.P. Lovecraft\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 6
+ testRunner.And("the book\'s title is \"The Call of Cthulhu\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
         }
         
@@ -100,8 +100,8 @@ namespace Books.Spec.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a book", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 9
- this.ScenarioInitialize(scenarioInfo);
+#line 8
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
             bool isFeatureIgnored = default(bool);
@@ -120,20 +120,20 @@ namespace Books.Spec.Features
             else
             {
                 this.ScenarioStart();
-#line 5
- this.FeatureBackground();
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 9
+ testRunner.When("the book is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 10
-  testRunner.When("the book is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("the book should not be null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 11
-  testRunner.Then("the book should not be null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("the book\'s title should match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 12
-  testRunner.And("the book\'s title should match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 13
-  testRunner.And("the book author\'s name should match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the book author\'s name should match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -147,8 +147,8 @@ namespace Books.Spec.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename a book", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 15
- this.ScenarioInitialize(scenarioInfo);
+#line 14
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
             bool isFeatureIgnored = default(bool);
@@ -167,23 +167,76 @@ namespace Books.Spec.Features
             else
             {
                 this.ScenarioStart();
-#line 5
- this.FeatureBackground();
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 15
+ testRunner.Given("the book is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 16
-  testRunner.Given("the book is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.When("the book is renamed to \"At the Mountains of Madness\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 17
-  testRunner.When("the book is renamed to \"At the Mountains of Madness\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("the book should not be null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 18
-  testRunner.Then("the book should not be null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("the book\'s title should not match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 19
-  testRunner.And("the book\'s title should not match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the book author\'s name should match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 20
-  testRunner.And("the book author\'s name should match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Publish a book")]
+        [Xunit.TraitAttribute("FeatureTitle", "Books")]
+        [Xunit.TraitAttribute("Description", "Publish a book")]
+        public virtual void PublishABook()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Publish a book", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 21
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 22
+ testRunner.Given("the book is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 23
+ testRunner.When("the book is published at \"2021-04-10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 24
+ testRunner.Then("the book should not be null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 25
+ testRunner.And("the book\'s published date should match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 26
+ testRunner.And("the book\'s title should match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 27
+ testRunner.And("the book author\'s name should match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
