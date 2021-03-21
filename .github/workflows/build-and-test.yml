@@ -28,6 +28,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore BddPatterns.sln
     - name: Build
-      run: dotnet build --configuration Release --no-restore BddPatterns.sln
+      run: dotnet build --no-restore BddPatterns.sln
     - name: Test
       run: dotnet test --no-build --verbosity normal BddPatterns.sln
