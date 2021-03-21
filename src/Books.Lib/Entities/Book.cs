@@ -8,10 +8,21 @@ namespace Books.Lib.Entities
     public class Book
     {
         protected BookPublishState _publishingState = new();
-        public Book(string authorsName, string booksTitle)
+        internal Book()
+        {
+
+        }
+
+        protected Book(string authorsName, string booksTitle)
         {
             AuthorName = authorsName;
             Title = booksTitle;
+        }
+
+        protected Book(string authorName, string title, BookPublishState publishStatus)
+            : this (authorName, title)
+        {
+            _publishingState = publishStatus;
         }
 
         public string AuthorName { get; protected set; }
@@ -24,7 +35,7 @@ namespace Books.Lib.Entities
             Title = newTitle;
         }
 
-        public void Publish(DateTimeOffset publicationDate, bool bumpEdition = true)
+        public virtual void Publish(DateTimeOffset publicationDate, bool bumpEdition = true)
         {
             if (publicationDate > DateTimeOffset.Now)
             {
@@ -39,7 +50,7 @@ namespace Books.Lib.Entities
         /// <summary>
         /// Publication status of a Book.
         /// </summary>
-        protected struct BookPublishState
+        public struct BookPublishState
         {
             public BookPublishState(int currentVersion = 0, DateTimeOffset? revisionDate = null)
             {
@@ -67,7 +78,7 @@ namespace Books.Lib.Entities
             /// </summary>
             /// <param name="publishDate"></param>
             /// <returns></returns>
-            public BookPublishState Bump(DateTimeOffset publishDate)
+            internal BookPublishState Bump(DateTimeOffset publishDate)
             {
                 return new BookPublishState(CurrentVersion + 1, publishDate);
             }
@@ -77,72 +88,100 @@ namespace Books.Lib.Entities
             /// </summary>
             /// <param name="revisionDate"></param>
             /// <returns></returns>
-            public BookPublishState Revise(DateTimeOffset revisionDate)
+            internal BookPublishState Revise(DateTimeOffset revisionDate)
             {
                 return new BookPublishState(CurrentVersion, revisionDate);
             }
         }
     }
 
+    public class UnpublishedBook : Book
+    {
+        internal UnpublishedBook(string authorsName, string title)
+            : base(authorsName, title)
+        {
+            _publishingState = new BookPublishState();
+        }
+    }
+
+    public class PublishedBook : Book
+    {
+        internal PublishedBook(string authorsName, string title, BookPublishState publishState) 
+            : base(authorsName, title, publishState)
+        {
+
+        }
+    }
+
     /// <summary>
     /// A Factory responsible for creating books from raw data.
     /// </summary>
-    public class BookFactory : IDisposable
+    public abstract class BookFactory : IDisposable
     {
-        private Book _inProgress = null;
-        private string _title;
-        private string _authorName;
+        protected readonly string authorsName;
+        protected readonly string title;
 
-        public BookFactory() { }
-
-        public void Dispose()
+        protected BookFactory(string authorsName, string title)
         {
-            _inProgress = null;
-            GC.SuppressFinalize(this);
+            this.authorsName = authorsName;
+            this.title = title;
         }
 
         /// <summary>
-        /// Creates the book with all the required elements so far.
+        /// Creates a book.
         /// </summary>
         /// <returns></returns>
-        public virtual Book Build()
+        public abstract Book Build();
+
+        public abstract void Dispose();
+    }
+
+    public class UnpublishedBookFactory : BookFactory
+    {
+        public UnpublishedBookFactory(string authorsName, string title) 
+            : base(authorsName, title)
         {
-            Validate();
-            _inProgress ??= new Book(_authorName, _title);
-            return _inProgress;
         }
 
-        protected virtual void Validate()
+        public override Book Build()
         {
-            // TODO: Validate specific business requirements
+            return new UnpublishedBook(authorsName, title);
         }
 
-        /// <summary>
-        /// Sets the book's title.
-        /// </summary>
-        /// <param name="bookTitle"></param>
-        public void WithTitle(string bookTitle)
+        public override void Dispose()
         {
-            if (string.IsNullOrWhiteSpace(bookTitle))
+            GC.SuppressFinalize(this);
+        }
+    }
+
+    public class PublishedBookFactory : BookFactory
+    {
+        protected Book.BookPublishState publishState;
+
+        public PublishedBookFactory(string authorsName, string title, int edition, DateTimeOffset publishedOn) 
+            : base(authorsName, title)
+        {
+            if (edition <= 0)
             {
-                throw new ArgumentException("A book must have a title", nameof(bookTitle));
+                throw new ArgumentOutOfRangeException(nameof(edition), "A published book must have an edition greater than zero");
             }
 
-            _title = bookTitle;
-        }
-
-        /// <summary>
-        /// Sets the book's author's name.
-        /// </summary>
-        /// <param name="authorName"></param>
-        public void WithAuthorNamed(string authorName)
-        {
-            if (string.IsNullOrWhiteSpace(authorName))
+            if (publishedOn.ToUniversalTime() > DateTimeOffset.UtcNow)
             {
-                throw new ArgumentException("A book must have an author", nameof(authorName));
+                throw new ArgumentException("A book can only be published on the Past", nameof(publishedOn));
             }
 
-            _authorName = authorName;
+            publishState = new Book.BookPublishState(edition, publishedOn);
+        }
+
+        public override Book Build()
+        {
+            return new PublishedBook(authorsName, title, publishState);
+        }
+
+        public override void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

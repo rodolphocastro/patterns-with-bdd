@@ -37,12 +37,18 @@ namespace Books.Spec.Steps
             get => (DateTimeOffset) _context.GetValueOrDefault(nameof(PublicationDate)); 
             set => _context[nameof(PublicationDate)] = value; 
         }
+        public int PublicationVersion 
+        { 
+            get => (int) _context.GetValueOrDefault(nameof(PublicationVersion)); 
+            set => _context[nameof(PublicationVersion)] = value; 
+        }
     }
 
     [Binding]
     public sealed class BookStepDefinitions
     {
         private readonly BookFeatureContext _wrappedContext;
+        private BookFactory _factory;
         private Book _subject = null;
 
         public BookStepDefinitions(FeatureContext context)
@@ -68,18 +74,38 @@ namespace Books.Spec.Steps
             _wrappedContext.PublicationDate = DateTimeOffset.Parse(dateUtc);
         }
 
+        [Given(@"the publication version is (.*)")]
+        public void GivenThePublicationVersionIs(int version)
+        {
+            _wrappedContext.PublicationVersion = version;
+        }
 
         [Given(@"the book is created")]
         public void GivenTheBookIsCreated()
         {
-            _subject = new Book(_wrappedContext.AuthorName, _wrappedContext.BookTitle);
+            _subject = new UnpublishedBookFactory(_wrappedContext.AuthorName, _wrappedContext.BookTitle).Build();
         }
 
+        [Given(@"an unpublished book factory")]
+        public void GivenAnUnpublishedBookFactory()
+        {
+            _factory = new UnpublishedBookFactory(_wrappedContext.AuthorName, _wrappedContext.BookTitle);
+        }
+
+        [Given(@"a published book factory")]
+        public void GivenAPublishedBookFactory()
+        {
+            _factory = new PublishedBookFactory(
+                _wrappedContext.AuthorName,
+                _wrappedContext.BookTitle,
+                _wrappedContext.PublicationVersion,
+                _wrappedContext.PublicationDate);
+        }
 
         [When(@"the book is created")]
         public void WhenTheBookIsCreated()
         {
-            _subject = new Book(_wrappedContext.AuthorName, _wrappedContext.BookTitle);
+            GivenTheBookIsCreated();
         }
 
         [When(@"the book is renamed to ""(.*)""")]
@@ -88,13 +114,10 @@ namespace Books.Spec.Steps
             _subject.RenameTo(newTitle);
         }
 
-        [When(@"the vanilla factory creates a book")]
+        [When(@"the factory creates a book")]
         public void WhenTheFactoryCreatesABook()
         {
-            using BookFactory bookFactory = new BookFactory();
-            bookFactory.WithTitle(_wrappedContext.BookTitle);
-            bookFactory.WithAuthorNamed(_wrappedContext.AuthorName);
-            _subject = bookFactory.Build();
+            _subject = _factory.Build();
         }
 
         [When(@"the book is published")]
@@ -144,6 +167,12 @@ namespace Books.Spec.Steps
         public void ThenTheBookSRevisionShouldBe(int p0)
         {
             Assert.Equal(p0, _subject.Version);
+        }
+
+        [Then(@"the book's published date should be null")]
+        public void ThenTheBookSPublishedDateShouldBeNull()
+        {
+            Assert.Equal(DateTimeOffset.MinValue, _subject.PublishedOn);
         }
 
     }
