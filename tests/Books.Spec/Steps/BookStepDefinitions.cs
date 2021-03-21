@@ -14,7 +14,6 @@ namespace Books.Spec.Steps
     public sealed class BookStepDefinitions
     {
         private readonly BookDataDriver _bookDataDriver;
-        private BookFactory _factory;
 
         public BookStepDefinitions(BookDataDriver context)
         {
@@ -48,96 +47,74 @@ namespace Books.Spec.Steps
         [Given(@"the book is created")]
         public void GivenTheBookIsCreated()
         {
-            _bookDataDriver.Subject = _bookDataDriver.CreateUnpublished();
-        }
-
-        [Given(@"an unpublished book factory")]
-        public void GivenAnUnpublishedBookFactory()
-        {
-            _factory = new UnpublishedBookFactory(_bookDataDriver.AuthorName, _bookDataDriver.BookTitle);
-        }
-
-        [Given(@"a published book factory")]
-        public void GivenAPublishedBookFactory()
-        {
-            _factory = new PublishedBookFactory(
-                _bookDataDriver.AuthorName,
-                _bookDataDriver.BookTitle,
-                _bookDataDriver.PublicationVersion,
-                _bookDataDriver.PublicationDate);
+            _bookDataDriver.BookSubject = _bookDataDriver.CreateUnpublished();
         }
 
         [When(@"the book is created")]
         public void WhenTheBookIsCreated()
         {
-            _bookDataDriver.Subject = _bookDataDriver.CreateUnpublished();
+            _bookDataDriver.BookSubject = _bookDataDriver.CreateUnpublished();
         }
 
         [When(@"the book is renamed to ""(.*)""")]
         public void WhenTheBookIsRenamedTo(string newTitle)
         {
-            _bookDataDriver.Subject.RenameTo(newTitle);
-        }
-
-        [When(@"the factory creates a book")]
-        public void WhenTheFactoryCreatesABook()
-        {
-            _bookDataDriver.Subject = _factory.Build();
+            _bookDataDriver.BookSubject.RenameTo(newTitle);
         }
 
         [When(@"the book is published")]
         public void WhenTheBookIsPublished()
         {
-            _bookDataDriver.Subject.Publish(_bookDataDriver.PublicationDate, true);
+            _bookDataDriver.BookSubject.Publish(_bookDataDriver.PublicationDate, true);
         }
 
         [When(@"the published date is set")]
         public void WhenThePublishedDateIsSet()
         {
-            _bookDataDriver.Subject.Publish(_bookDataDriver.PublicationDate, false);
+            _bookDataDriver.BookSubject.Publish(_bookDataDriver.PublicationDate, false);
         }
 
 
         [Then(@"the book should not be null")]
         public void ThenTheBookShouldNotBeNull()
         {
-            Assert.NotNull(_bookDataDriver.Subject);
+            Assert.NotNull(_bookDataDriver.BookSubject);
         }
 
         [Then(@"the book's title should match")]
         public void ThenTheBookSTitleShouldMatch()
         {
-            Assert.Equal(_bookDataDriver.BookTitle, _bookDataDriver.Subject.Title);
+            Assert.Equal(_bookDataDriver.BookTitle, _bookDataDriver.BookSubject.Title);
         }
 
         [Then(@"the book's title should not match")]
         public void ThenTheBookSTitleShouldNotMatch()
         {
-            Assert.NotEqual(_bookDataDriver.BookTitle, _bookDataDriver.Subject.Title);
+            Assert.NotEqual(_bookDataDriver.BookTitle, _bookDataDriver.BookSubject.Title);
         }
 
         [Then(@"the book author's name should match")]
         public void ThenTheBookSNameShouldMatch()
         {
-            Assert.Equal(_bookDataDriver.AuthorName, _bookDataDriver.Subject.AuthorName);
+            Assert.Equal(_bookDataDriver.AuthorName, _bookDataDriver.BookSubject.AuthorName);
         }
 
         [Then(@"the book's published date should match")]
         public void ThenTheBookSPublishedDateShouldMatch()
         {
-            Assert.Equal(_bookDataDriver.PublicationDate, _bookDataDriver.Subject.PublishedOn);
+            Assert.Equal(_bookDataDriver.PublicationDate, _bookDataDriver.BookSubject.PublishedOn);
         }
 
         [Then(@"the book's revision should be (.*)")]
         public void ThenTheBookSRevisionShouldBe(int p0)
         {
-            Assert.Equal(p0, _bookDataDriver.Subject.Version);
+            Assert.Equal(p0, _bookDataDriver.BookSubject.Version);
         }
 
         [Then(@"the book's published date should be null")]
         public void ThenTheBookSPublishedDateShouldBeNull()
         {
-            Assert.Equal(DateTimeOffset.MinValue, _bookDataDriver.Subject.PublishedOn);
+            Assert.Equal(DateTimeOffset.MinValue, _bookDataDriver.BookSubject.PublishedOn);
         }
 
     }

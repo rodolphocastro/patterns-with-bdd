@@ -41,10 +41,10 @@ namespace Books.Spec.Drivers
             set => _context[nameof(PublicationVersion)] = value;
         }
 
-        public Book Subject
+        public Book BookSubject
         {
-            get => _context.GetValueOrDefault(nameof(Subject)) as Book;
-            set => _context[nameof(Subject)] = value;
+            get => _context.GetValueOrDefault(nameof(BookSubject)) as Book;
+            set => _context[nameof(BookSubject)] = value;
         }
 
         public Book CreateUnpublished()
