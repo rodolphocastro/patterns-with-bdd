@@ -1,7 +1,7 @@
 ﻿using Books.Lib.Entities;
+using Books.Spec.Drivers;
 
 using System;
-using System.Collections.Generic;
 
 using TechTalk.SpecFlow;
 
@@ -9,95 +9,112 @@ using Xunit;
 
 namespace Books.Spec.Steps
 {
-    /// <summary>
-    /// Wrapper for the Book's feature context.
-    /// </summary>
-    public sealed class BookFeatureContext
-    {
-        private readonly FeatureContext _context;
-
-        public BookFeatureContext(FeatureContext context)
-        {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-        }
-
-        public string AuthorName
-        {
-            get => _context.GetValueOrDefault(nameof(AuthorName)) as string;
-            set => _context[nameof(AuthorName)] = value;
-        }
-
-        public string BookTitle
-        {
-            get => _context.GetValueOrDefault(nameof(BookTitle)) as string;
-            set => _context[nameof(BookTitle)] = value;
-        }
-    }
 
     [Binding]
     public sealed class BookStepDefinitions
     {
-        private readonly BookFeatureContext _wrappedContext;
-        private Book _subject = null;
+        private readonly BookDataDriver _bookDataDriver;
 
-        public BookStepDefinitions(FeatureContext context)
+        public BookStepDefinitions(BookDataDriver context)
         {
-            _wrappedContext = new BookFeatureContext(context);
+            _bookDataDriver = context;
         }
 
         [Given(@"the author's name is ""(.*)""")]
         public void GivenTheAuthorSNameIs(string authorName)
         {
-            _wrappedContext.AuthorName = authorName;
+            _bookDataDriver.AuthorName = authorName;
         }
 
         [Given(@"the book's title is ""(.*)""")]
         public void GivenTheBookSTitleIs(string bookTitle)
         {
-            _wrappedContext.BookTitle = bookTitle;
+            _bookDataDriver.BookTitle = bookTitle;
+        }
+
+        [Given(@"the publication date is ""(.*)""")]
+        public void GivenThePublicationDateIs(string dateUtc)
+        {
+            _bookDataDriver.PublicationDate = DateTimeOffset.Parse(dateUtc);
+        }
+
+        [Given(@"the publication version is (.*)")]
+        public void GivenThePublicationVersionIs(int version)
+        {
+            _bookDataDriver.PublicationVersion = version;
         }
 
         [Given(@"the book is created")]
         public void GivenTheBookIsCreated()
         {
-            _subject = new Book(_wrappedContext.AuthorName, _wrappedContext.BookTitle);
+            _bookDataDriver.BookSubject = _bookDataDriver.CreateUnpublished();
         }
-
 
         [When(@"the book is created")]
         public void WhenTheBookIsCreated()
         {
-            _subject = new Book(_wrappedContext.AuthorName, _wrappedContext.BookTitle);
+            _bookDataDriver.BookSubject = _bookDataDriver.CreateUnpublished();
         }
 
         [When(@"the book is renamed to ""(.*)""")]
         public void WhenTheBookIsRenamedTo(string newTitle)
         {
-            _subject.RenameTo(newTitle);
+            _bookDataDriver.BookSubject.RenameTo(newTitle);
         }
+
+        [When(@"the book is published")]
+        public void WhenTheBookIsPublished()
+        {
+            _bookDataDriver.BookSubject.Publish(_bookDataDriver.PublicationDate, true);
+        }
+
+        [When(@"the published date is set")]
+        public void WhenThePublishedDateIsSet()
+        {
+            _bookDataDriver.BookSubject.Publish(_bookDataDriver.PublicationDate, false);
+        }
+
 
         [Then(@"the book should not be null")]
         public void ThenTheBookShouldNotBeNull()
         {
-            Assert.NotNull(_subject);
+            Assert.NotNull(_bookDataDriver.BookSubject);
         }
 
         [Then(@"the book's title should match")]
         public void ThenTheBookSTitleShouldMatch()
         {
-            Assert.Equal(_wrappedContext.BookTitle, _subject.Title);
+            Assert.Equal(_bookDataDriver.BookTitle, _bookDataDriver.BookSubject.Title);
         }
 
         [Then(@"the book's title should not match")]
         public void ThenTheBookSTitleShouldNotMatch()
         {
-            Assert.NotEqual(_wrappedContext.BookTitle, _subject.Title);
+            Assert.NotEqual(_bookDataDriver.BookTitle, _bookDataDriver.BookSubject.Title);
         }
 
         [Then(@"the book author's name should match")]
         public void ThenTheBookSNameShouldMatch()
         {
-            Assert.Equal(_wrappedContext.AuthorName, _subject.AuthorName);
+            Assert.Equal(_bookDataDriver.AuthorName, _bookDataDriver.BookSubject.AuthorName);
+        }
+
+        [Then(@"the book's published date should match")]
+        public void ThenTheBookSPublishedDateShouldMatch()
+        {
+            Assert.Equal(_bookDataDriver.PublicationDate, _bookDataDriver.BookSubject.PublishedOn);
+        }
+
+        [Then(@"the book's revision should be (.*)")]
+        public void ThenTheBookSRevisionShouldBe(int p0)
+        {
+            Assert.Equal(p0, _bookDataDriver.BookSubject.Version);
+        }
+
+        [Then(@"the book's published date should be null")]
+        public void ThenTheBookSPublishedDateShouldBeNull()
+        {
+            Assert.Equal(DateTimeOffset.MinValue, _bookDataDriver.BookSubject.PublishedOn);
         }
 
     }
