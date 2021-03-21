@@ -32,6 +32,11 @@ namespace Books.Spec.Steps
             get => _context.GetValueOrDefault(nameof(BookTitle)) as string;
             set => _context[nameof(BookTitle)] = value;
         }
+        public DateTimeOffset PublicationDate 
+        { 
+            get => (DateTimeOffset) _context.GetValueOrDefault(nameof(PublicationDate)); 
+            set => _context[nameof(PublicationDate)] = value; 
+        }
     }
 
     [Binding]
@@ -56,6 +61,13 @@ namespace Books.Spec.Steps
         {
             _wrappedContext.BookTitle = bookTitle;
         }
+
+        [Given(@"the publication date is ""(.*)""")]
+        public void GivenThePublicationDateIs(string dateUtc)
+        {
+            _wrappedContext.PublicationDate = DateTimeOffset.Parse(dateUtc);
+        }
+
 
         [Given(@"the book is created")]
         public void GivenTheBookIsCreated()
@@ -85,6 +97,19 @@ namespace Books.Spec.Steps
             _subject = bookFactory.Build();
         }
 
+        [When(@"the book is published")]
+        public void WhenTheBookIsPublished()
+        {
+            _subject.Publish(_wrappedContext.PublicationDate, true);
+        }
+
+        [When(@"the published date is set")]
+        public void WhenThePublishedDateIsSet()
+        {
+            _subject.Publish(_wrappedContext.PublicationDate, false);
+        }
+
+
         [Then(@"the book should not be null")]
         public void ThenTheBookShouldNotBeNull()
         {
@@ -109,5 +134,10 @@ namespace Books.Spec.Steps
             Assert.Equal(_wrappedContext.AuthorName, _subject.AuthorName);
         }
 
+        [Then(@"the book's published date should match")]
+        public void ThenTheBookSPublishedDateShouldMatch()
+        {
+            Assert.Equal(_wrappedContext.PublicationDate, _subject.PublishedOn);
+        }
     }
 }

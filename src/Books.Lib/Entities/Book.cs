@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Books.Lib.Entities
 {
@@ -13,12 +14,23 @@ namespace Books.Lib.Entities
             Title = booksTitle;
         }
 
-        public string AuthorName { get; }
+        public string AuthorName { get; protected set; }
         public string Title { get; protected set; }
+        public DateTimeOffset PublishedOn { get; protected set; }
 
         public void RenameTo(string newTitle)
         {
             Title = newTitle;
+        }
+
+        public void Publish(DateTimeOffset publicationDate, bool bumpEdition = true)
+        {
+            if (publicationDate > DateTimeOffset.Now)
+            {
+                throw new ArgumentException("A book cannot be published on the Future", nameof(publicationDate));
+            }
+
+            PublishedOn = publicationDate;
         }
     }
 
@@ -36,13 +48,14 @@ namespace Books.Lib.Entities
         public void Dispose()
         {
             _inProgress = null;
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
         /// Creates the book with all the required elements so far.
         /// </summary>
         /// <returns></returns>
-        public Book Build()
+        public virtual Book Build()
         {
             Validate();
             _inProgress ??= new Book(_authorName, _title);

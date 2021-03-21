@@ -12,13 +12,13 @@ Scenario: Create an unpublished book
 	And the book author's name should match
 
 Scenario: Create a published book
-	Given the publication date is "2021-04-10"
+	Given the publication date is "2020-04-10"
 	When the book is created
 	And the published date is set
 	Then the book should not be null
 	And the book's title should match
 	And the book author's name should match
-	And the book's published data should match
+	And the book's published date should match
 
 Scenario: Rename a book
 	Given the book is created
@@ -29,7 +29,8 @@ Scenario: Rename a book
 
 Scenario: Publish a book
 	Given the book is created
-	When the book is published on "2021-04-10"
+	And the publication date is "2020-04-10"
+	When the book is published
 	Then the book should not be null
 	And the book's published date should match
 	And the book's title should match
