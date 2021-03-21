@@ -5,6 +5,18 @@
     /// </summary>
     public class Book
     {
-        // TODO: Scaffold with Stubs
+        public Book(string authorsName, string booksTitle)
+        {
+            AuthorName = authorsName;
+            Title = booksTitle;
+        }
+
+        public string AuthorName { get; }
+        public string Title { get; protected set; }
+
+        public void RenameTo(string newTitle)
+        {
+            Title = newTitle;
+        }
     }
 }
