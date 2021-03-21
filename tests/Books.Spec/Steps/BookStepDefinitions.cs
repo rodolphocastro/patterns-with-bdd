@@ -85,7 +85,6 @@ namespace Books.Spec.Steps
             _subject = bookFactory.Build();
         }
 
-
         [Then(@"the book should not be null")]
         public void ThenTheBookShouldNotBeNull()
         {

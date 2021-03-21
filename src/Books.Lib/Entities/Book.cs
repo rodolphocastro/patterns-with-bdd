@@ -28,6 +28,9 @@ namespace Books.Lib.Entities
     public class BookFactory : IDisposable
     {
         private Book _inProgress = null;
+        private string _title;
+        private string _authorName;
+
         public BookFactory() { }
 
         public void Dispose()
@@ -41,7 +44,14 @@ namespace Books.Lib.Entities
         /// <returns></returns>
         public Book Build()
         {
-            throw new NotImplementedException();
+            Validate();
+            _inProgress ??= new Book(_authorName, _title);
+            return _inProgress;
+        }
+
+        protected virtual void Validate()
+        {
+            // TODO: Validate specific business requirements
         }
 
         /// <summary>
@@ -50,7 +60,12 @@ namespace Books.Lib.Entities
         /// <param name="bookTitle"></param>
         public void WithTitle(string bookTitle)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(bookTitle))
+            {
+                throw new ArgumentException("A book must have a title", nameof(bookTitle));
+            }
+
+            _title = bookTitle;
         }
 
         /// <summary>
@@ -59,7 +74,12 @@ namespace Books.Lib.Entities
         /// <param name="authorName"></param>
         public void WithAuthorNamed(string authorName)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(authorName))
+            {
+                throw new ArgumentException("A book must have an author", nameof(authorName));
+            }
+
+            _authorName = authorName;
         }
     }
 }
