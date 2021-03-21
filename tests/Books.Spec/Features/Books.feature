@@ -18,3 +18,9 @@
 		Then the book should not be null
 		And the book's title should not match
 		And the book author's name should match
+
+	Scenario: Factorize a book
+		When the factory creates a book
+		Then the book should not be null
+		And the book's title should match
+		And the book author's name should match
