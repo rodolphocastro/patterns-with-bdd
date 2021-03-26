@@ -1,4 +1,4 @@
-name: .NET
+name: Build and Test
 
 on:
   push:
@@ -31,17 +31,17 @@ jobs:
       run: dotnet build --no-restore BddPatterns.sln
     - name: Test
       run: dotnet test --no-build --verbosity normal BddPatterns.sln
+      # github.head_ref is only set for PRs
     - name: Generate living docs
-      if: success()
+      if: ${{success() && github.head_ref != null}}
       run: |
         dotnet tool install --global specflow.plus.livingdoc.cli
         cd tests/Books.Spec/bin/Debug/net5.0/
         livingdoc test-assembly ./Books.Spec.dll -t TestExecution.json
-    - name: Upload a Build Artifact
-      if: ${{github.head_ref != null}}
+    - name: Upload Living Docs to GitHub
+      if: ${{success() && github.head_ref != null}}
       uses: actions/upload-artifact@v2.2.2
       with:
-        name: format('{0}-TestResults', ${{github.head_ref}})
+        name: ${{format('{0}-TestResults', github.head_ref)}}
         path: tests/Books.Spec/bin/Debug/net5.0/LivingDoc.html
         retention-days: 7
-      
