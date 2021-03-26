@@ -1,7 +1,10 @@
-﻿using Books.Lib.Entities;
+﻿using Bogus;
+
+using Books.Lib.Entities;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using TechTalk.SpecFlow;
 
@@ -10,7 +13,7 @@ namespace Books.Spec.Drivers
     /// <summary>
     /// Wrapper for the Book and its related data.
     /// </summary>
-    public sealed class BookDataDriver
+    public sealed class BookDataDriver : Faker
     {
         private readonly ScenarioContext _context;
 
@@ -56,6 +59,16 @@ namespace Books.Spec.Drivers
         {
             return new PublishedBook(AuthorName, BookTitle, 
                 new Book.BookPublishState(PublicationVersion, PublicationDate));
+        }
+
+        public string CreateRandomAuthor()
+        {
+            return Name.FullName();
+        }
+
+        public string CreateRandomTitle()
+        {
+            return string.Join(" ", Lorem.Words());
         }
     }
 }

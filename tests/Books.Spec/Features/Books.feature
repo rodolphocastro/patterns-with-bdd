@@ -2,8 +2,8 @@
 	A Book written by an Author and that might have been published.
 
 Background:
-	Given the author's name is "H.P. Lovecraft"
-	And the book's title is "The Call of Cthulhu"
+	Given A random author's name
+	And A random book's title
 
 Scenario: Create an unpublished book
 	When the book is created

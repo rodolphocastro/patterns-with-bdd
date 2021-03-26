@@ -21,6 +21,18 @@ namespace Books.Spec.Steps
             _bookDataDriver = context;
         }
 
+        [Given(@"A random author's name")]
+        public void GivenARandomAuthorsName()
+        {
+            _bookDataDriver.AuthorName = _bookDataDriver.CreateRandomAuthor();
+        }
+
+        [Given(@"A random book's title")]
+        public void GivenARandomTitle()
+        {
+            _bookDataDriver.BookTitle = _bookDataDriver.CreateRandomTitle();
+        }
+
         [Given(@"the author's name is ""(.*)""")]
         public void GivenTheAuthorSNameIs(string authorName)
         {
