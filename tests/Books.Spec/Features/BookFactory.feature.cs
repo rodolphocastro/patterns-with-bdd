@@ -83,10 +83,10 @@ namespace Books.Spec.Features
 #line 7
 #line hidden
 #line 8
- testRunner.Given("the author\'s name is \"H.P. Lovecraft\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("A random author\'s name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 9
- testRunner.And("the book\'s title is \"The Call of Cthulhu\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("A random book\'s title", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 10
  testRunner.And("the publication date is \"2020-04-10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

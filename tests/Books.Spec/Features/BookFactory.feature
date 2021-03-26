@@ -5,8 +5,8 @@
 	You can read more about the Factory on [Refactoring Guru](https://refactoring.guru/design-patterns/factory-method).
 
 Background:
-	Given the author's name is "H.P. Lovecraft"
-	And the book's title is "The Call of Cthulhu"
+	Given A random author's name
+	And A random book's title
 	And the publication date is "2020-04-10"
 	And the publication version is 1
 
