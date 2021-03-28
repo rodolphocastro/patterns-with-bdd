@@ -40,7 +40,10 @@ namespace Books.Spec.Features
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "BookBuilder", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "BookBuilder", @"	A builder is a ""creational"" design pattern that allows you to slowly create
+	an object step-by-step. On C# this is usually implemented with a ""Fluent""
+	interface, such as the one seem for LINQ's methods.
+	You can read more about the Builder on [Refactoring Guru](https://refactoring.guru/design-patterns/builder)", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -77,12 +80,12 @@ namespace Books.Spec.Features
         
         public virtual void FeatureBackground()
         {
-#line 3
+#line 7
 #line hidden
-#line 4
+#line 8
  testRunner.Given("A random author\'s name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 5
+#line 9
  testRunner.And("A random book\'s title", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
         }
@@ -100,7 +103,7 @@ namespace Books.Spec.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Build an unpublished book", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 7
+#line 11
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -120,28 +123,28 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 3
+#line 7
 this.FeatureBackground();
 #line hidden
-#line 8
+#line 12
  testRunner.Given("an unpublished book builder", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 9
+#line 13
  testRunner.When("the builder receives a Title", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 10
+#line 14
  testRunner.And("the builder receives an Author\'s name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 11
+#line 15
  testRunner.And("the builder applies the values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 12
+#line 16
  testRunner.Then("the book should not be null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 13
+#line 17
  testRunner.And("the book\'s title should match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 14
+#line 18
  testRunner.And("the book author\'s name should match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -156,7 +159,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Build a published book", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 16
+#line 20
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -176,43 +179,43 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 3
+#line 7
 this.FeatureBackground();
 #line hidden
-#line 17
+#line 21
  testRunner.Given("a published book builder", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 18
+#line 22
  testRunner.And("the publication date is \"2020-04-10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 19
+#line 23
  testRunner.And("the publication version is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 20
+#line 24
  testRunner.When("the builder receives a Title", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 21
+#line 25
  testRunner.And("the builder receives an Author\'s name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 22
+#line 26
  testRunner.And("the builder receives a publication date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 23
+#line 27
  testRunner.And("the builder receives a publication version", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 24
+#line 28
  testRunner.And("the builder applies the values", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 25
+#line 29
  testRunner.Then("the book should not be null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 26
+#line 30
  testRunner.And("the book\'s title should match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 27
+#line 31
  testRunner.And("the book author\'s name should match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 28
+#line 32
  testRunner.And("the book\'s revision should be 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

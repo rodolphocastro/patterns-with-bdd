@@ -50,13 +50,13 @@ namespace Books.Spec.Steps
         [When(@"the builder receives a publication date")]
         public void WhenTheBuilderReceivesAPublicationDate()
         {
-            ScenarioContext.Current.Pending();
+            _builderDriver.ApplyPublicationDate();
         }
 
         [When(@"the builder receives a publication version")]
         public void WhenTheBuilderReceivesAPublicationVersion()
         {
-            ScenarioContext.Current.Pending();
+            _builderDriver.ApplyPublicationVersion();
         }
 
     }

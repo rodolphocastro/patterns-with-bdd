@@ -20,7 +20,7 @@ namespace Books.Lib.Entities
         }
 
         protected Book(string authorName, string title, BookPublishState publishStatus)
-            : this (authorName, title)
+            : this(authorName, title)
         {
             _publishingState = publishStatus;
         }
@@ -67,7 +67,7 @@ namespace Books.Lib.Entities
             /// Current revision.
             /// </summary>
             public int CurrentVersion { get; }
-            
+
             /// <summary>
             /// When it was last revised.
             /// </summary>
@@ -106,7 +106,7 @@ namespace Books.Lib.Entities
 
     public class PublishedBook : Book
     {
-        public PublishedBook(string authorsName, string title, BookPublishState publishState) 
+        public PublishedBook(string authorsName, string title, BookPublishState publishState)
             : base(authorsName, title, publishState)
         {
 
@@ -141,7 +141,7 @@ namespace Books.Lib.Entities
     /// </summary>
     public class UnpublishedBookFactory : BookFactory
     {
-        public UnpublishedBookFactory(string authorsName, string title) 
+        public UnpublishedBookFactory(string authorsName, string title)
             : base(authorsName, title)
         {
         }
@@ -164,7 +164,7 @@ namespace Books.Lib.Entities
     {
         protected Book.BookPublishState publishState;
 
-        public PublishedBookFactory(string authorsName, string title, int edition, DateTimeOffset publishedOn) 
+        public PublishedBookFactory(string authorsName, string title, int edition, DateTimeOffset publishedOn)
             : base(authorsName, title)
         {
             if (edition <= 0)
@@ -295,9 +295,46 @@ namespace Books.Lib.Entities
     /// </summary>
     public class PublishedBookBuilder : BookBuilder
     {
+        private PublishedBookBuilderState _publishedState;
+
+        struct PublishedBookBuilderState
+        {
+            public PublishedBookBuilderState(PublishedBookBuilderState previousBuilder)
+            {
+                PublicationDate = previousBuilder.PublicationDate;
+                PublicationVersion = previousBuilder.PublicationVersion;
+            }
+            public DateTimeOffset PublicationDate { get; init; }
+            public int PublicationVersion { get; init; }
+        }
+
+        public PublishedBookBuilder PublishedOn(DateTimeOffset pubDate)
+        {
+            _publishedState = new(_publishedState)
+            {
+                PublicationDate = pubDate
+            };
+            return this;
+        }
+
+        public PublishedBookBuilder WithVersion(int pubVersion)
+        {
+            _publishedState = new(_publishedState)
+            {
+                PublicationVersion = pubVersion
+            };
+            return this;
+        }
+
         public override PublishedBook Apply()
         {
-            throw new NotImplementedException();
+            return new PublishedBook(
+                _state.AuthorName,
+                _state.Title,
+                new Book.BookPublishState(
+                    _publishedState.PublicationVersion,
+                    _publishedState.PublicationDate)
+                );
         }
     }
 }

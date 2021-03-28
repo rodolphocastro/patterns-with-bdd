@@ -52,6 +52,17 @@ namespace Books.Spec.Drivers
             get => _bookDriver.BookSubject;
             set => _bookDriver.BookSubject = value;
         }
+
+        internal void ApplyPublicationDate()
+        {
+            PublishedBuilder.PublishedOn(_bookDriver.PublicationDate);
+        }
+
+        internal void ApplyPublicationVersion()
+        {
+            PublishedBuilder.WithVersion(_bookDriver.PublicationVersion);
+        }
+
         public PublishedBookBuilder PublishedBuilder
         {
             get
