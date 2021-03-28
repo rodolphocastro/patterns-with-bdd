@@ -196,7 +196,7 @@ namespace Books.Lib.Entities
     /// </summary>
     public abstract class BookBuilder : IDisposable
     {
-        protected struct BookBuilderState
+        protected record BookBuilderState
         {
             public BookBuilderState(BookBuilderState originalState)
             {
@@ -295,9 +295,9 @@ namespace Books.Lib.Entities
     /// </summary>
     public class PublishedBookBuilder : BookBuilder
     {
-        private PublishedBookBuilderState _publishedState;
+        private PublishedBookBuilderState _publishedState = new();
 
-        struct PublishedBookBuilderState
+        record PublishedBookBuilderState
         {
             public PublishedBookBuilderState(PublishedBookBuilderState previousBuilder)
             {
