@@ -7,7 +7,7 @@ namespace Books.Lib.Entities
     /// </summary>
     public class Book
     {
-        protected BookPublishState _publishingState = new();
+        protected internal BookPublishState _publishingState = new();
         internal Book()
         {
 
@@ -25,8 +25,8 @@ namespace Books.Lib.Entities
             _publishingState = publishStatus;
         }
 
-        public string AuthorName { get; protected set; }
-        public string Title { get; protected set; }
+        public string AuthorName { get; protected internal set; }
+        public string Title { get; protected internal set; }
         public DateTimeOffset PublishedOn => _publishingState.RevisionDate;
         public int Version => _publishingState.CurrentVersion;
 
@@ -136,6 +136,9 @@ namespace Books.Lib.Entities
         public abstract void Dispose();
     }
 
+    /// <summary>
+    /// A Factory for books that weren't published.
+    /// </summary>
     public class UnpublishedBookFactory : BookFactory
     {
         public UnpublishedBookFactory(string authorsName, string title) 
@@ -154,6 +157,9 @@ namespace Books.Lib.Entities
         }
     }
 
+    /// <summary>
+    /// A Factory for books that have been previously published.
+    /// </summary>
     public class PublishedBookFactory : BookFactory
     {
         protected Book.BookPublishState publishState;
@@ -182,6 +188,116 @@ namespace Books.Lib.Entities
         public override void Dispose()
         {
             GC.SuppressFinalize(this);
+        }
+    }
+
+    /// <summary>
+    /// Builder for creating Books.
+    /// </summary>
+    public abstract class BookBuilder : IDisposable
+    {
+        protected struct BookBuilderState
+        {
+            public BookBuilderState(BookBuilderState originalState)
+            {
+                Title = originalState.Title;
+                AuthorName = originalState.AuthorName;
+            }
+
+            public string Title { get; init; }
+            public string AuthorName { get; init; }
+        }
+
+        private bool _isDisposed = false;
+        protected BookBuilderState _state = new();
+        protected Book _subject = new();
+
+        protected BookBuilder()
+        {
+
+        }
+
+        public virtual BookBuilder Named(string title)
+        {
+            _state = new BookBuilderState(_state)
+            {
+                Title = title
+            };
+            return this;
+        }
+
+        public virtual BookBuilder WrittenBy(string author)
+        {
+            _state = new BookBuilderState(_state)
+            {
+                AuthorName = author
+            };
+            return this;
+        }
+
+        public abstract Book Apply();
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_isDisposed)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                _isDisposed = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~BookBuilder()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+    }
+
+    /// <summary>
+    /// Builder for creating Unpublished Books.
+    /// </summary>
+    public class UnpublishedBookBuilder : BookBuilder
+    {
+        public override UnpublishedBookBuilder Named(string title)
+        {
+            base.Named(title);
+            return this;
+        }
+
+        public override UnpublishedBookBuilder WrittenBy(string author)
+        {
+            base.WrittenBy(author);
+            return this;
+        }
+
+        public override UnpublishedBook Apply()
+        {
+            return new UnpublishedBook(_state.AuthorName, _state.Title);
+        }
+    }
+
+    /// <summary>
+    /// Builder for creating published books.
+    /// </summary>
+    public class PublishedBookBuilder : BookBuilder
+    {
+        public override PublishedBook Apply()
+        {
+            throw new NotImplementedException();
         }
     }
 }
