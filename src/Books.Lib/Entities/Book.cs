@@ -50,7 +50,7 @@ namespace Books.Lib.Entities
         /// <summary>
         /// Publication status of a Book.
         /// </summary>
-        public struct BookPublishState
+        public record BookPublishState
         {
             public BookPublishState(int currentVersion = 0, DateTimeOffset? revisionDate = null)
             {
@@ -58,20 +58,15 @@ namespace Books.Lib.Entities
                 RevisionDate = revisionDate ?? DateTimeOffset.MinValue;
             }
 
-            public BookPublishState(BookPublishState memento)
-                : this(memento.CurrentVersion, memento.RevisionDate)
-            {
-            }
-
             /// <summary>
             /// Current revision.
             /// </summary>
-            public int CurrentVersion { get; }
+            public int CurrentVersion { get; init; }
 
             /// <summary>
             /// When it was last revised.
             /// </summary>
-            public DateTimeOffset RevisionDate { get; }
+            public DateTimeOffset RevisionDate { get; init; }
 
             /// <summary>
             /// Change the publication date and bump the current version.
@@ -80,7 +75,11 @@ namespace Books.Lib.Entities
             /// <returns></returns>
             internal BookPublishState Bump(DateTimeOffset publishDate)
             {
-                return new BookPublishState(CurrentVersion + 1, publishDate);
+                return this with
+                {
+                    CurrentVersion = CurrentVersion + 1,
+                    RevisionDate = publishDate
+                };
             }
 
             /// <summary>
@@ -90,7 +89,10 @@ namespace Books.Lib.Entities
             /// <returns></returns>
             internal BookPublishState Revise(DateTimeOffset revisionDate)
             {
-                return new BookPublishState(CurrentVersion, revisionDate);
+                return this with
+                {
+                    RevisionDate = revisionDate
+                };
             }
         }
     }
